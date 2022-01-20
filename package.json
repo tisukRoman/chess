@@ -1,0 +1,12 @@
+{
+  "dependencies": {
+    "parcel": "^2.2.0"
+  },
+  "devDependencies": {
+    "typescript": "^4.5.4"
+  },
+  "scripts": {
+    "dev": "(parcel ./src/index.html) & parcel watch ./src/index.html",
+    "build": "parcel build ./src/index.html"
+  }
+}

@@ -1,0 +1,48 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: #333;
+}
+
+#field {
+  --size: 600;
+  position: absolute;
+  width: calc(var(--size) * 1px);
+  height: calc(var(--size) * 1px);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border: 2px solid #111;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.cell {
+  --size: 75;
+  width: calc(var(--size) * 1px);
+  height: calc(var(--size) * 1px);
+  border: 1px solid #111;
+  box-sizing: border-box;
+}
+
+.white {
+  background-color: #ddd;
+}
+
+.black {
+  background-color: #555;
+}
+
+img {
+  width: 90%;
+  height: 90%;
+}
+
+.focus {
+  background-color: #0d0;
+}
+
+/*# sourceMappingURL=index.af814d91.css.map */
