@@ -142,9 +142,9 @@
       this[globalName] = mainExports;
     }
   }
-})({"hMwtF":[function(require,module,exports) {
+})({"kRCqR":[function(require,module,exports) {
 var HMR_HOST = null;
-var HMR_PORT = null;
+var HMR_PORT = 1234;
 var HMR_SECURE = false;
 var HMR_ENV_HASH = "4a236f9275d0a351";
 module.bundle.HMR_BUNDLE_ID = "222e65dabdea7d65";
@@ -1194,20 +1194,17 @@ class PawnMovements {
     constructor(color){
         this.color = color;
         this.accessible_cells = [];
-        this.madeMove = false;
+        this.made_move = false;
         this.color = color;
     }
     findAccessibleCells(piece) {
         const x = piece.coords.x;
         const y = piece.coords.y;
         if (this.color === 'white') {
-            if (!this.madeMove) {
-                this.accessible_cells.push(_index.cellList.getCell({
-                    x: x,
-                    y: y - 2
-                }));
-                this.madeMove = true;
-            }
+            if (!this.made_move) this.accessible_cells.push(_index.cellList.getCell({
+                x: x,
+                y: y - 2
+            }));
             this.accessible_cells.push(_index.cellList.getCell({
                 x: x,
                 y: y - 1
@@ -1215,13 +1212,10 @@ class PawnMovements {
             this.accessible_cells = this.accessible_cells.filter((cell)=>cell
             );
         } else {
-            if (!this.madeMove) {
-                this.accessible_cells.push(_index.cellList.getCell({
-                    x: x,
-                    y: y + 2
-                }));
-                this.madeMove = true;
-            }
+            if (!this.made_move) this.accessible_cells.push(_index.cellList.getCell({
+                x: x,
+                y: y + 2
+            }));
             this.accessible_cells.push(_index.cellList.getCell({
                 x: x,
                 y: y + 1
@@ -1233,17 +1227,37 @@ class PawnMovements {
     clear() {
         this.accessible_cells = [];
     }
+    setMadeMove() {
+        this.made_move = true;
+    }
 }
 class WhitePawn extends _piece.Piece {
     constructor(x, y){
         super(x, y, white_pawn_src);
         this.pieceMovements = new PawnMovements('white');
     }
+    move(x, y) {
+        if (this.isCellAccessible(x, y)) {
+            this.updateCoords(x, y);
+            this.remove();
+            this.append();
+            this.pieceMovements.setMadeMove();
+        } else this.unselect();
+    }
 }
 class BlackPawn extends _piece.Piece {
     constructor(x, y){
         super(x, y, black_pawn_src);
         this.pieceMovements = new PawnMovements('black');
+        this.madeMove = false;
+    }
+    move(x, y) {
+        if (this.isCellAccessible(x, y)) {
+            this.updateCoords(x, y);
+            this.remove();
+            this.append();
+            this.pieceMovements.setMadeMove();
+        } else this.unselect();
     }
 }
 
@@ -1253,6 +1267,6 @@ module.exports = require('./helpers/bundle-url').getBundleURL('2VWEd') + "white_
 },{"./helpers/bundle-url":"chiK4"}],"1QXpn":[function(require,module,exports) {
 module.exports = require('./helpers/bundle-url').getBundleURL('2VWEd') + "black_pawn.d6bfd720.png" + "?" + Date.now();
 
-},{"./helpers/bundle-url":"chiK4"}]},["hMwtF","7PGg5"], "7PGg5", "parcelRequire94c2")
+},{"./helpers/bundle-url":"chiK4"}]},["kRCqR","7PGg5"], "7PGg5", "parcelRequire94c2")
 
 //# sourceMappingURL=index.bdea7d65.js.map
