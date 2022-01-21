@@ -2,6 +2,7 @@ import { Cell } from '../cells/Cell';
 import { pieceList, cellList } from '../index';
 
 export type Coords = { x: number; y: number };
+export type Color = 'white' | 'black';
 
 export interface PieceMovements {
   accessible_cells: Cell[];
@@ -11,6 +12,7 @@ export interface PieceMovements {
 
 export abstract class Piece {
   protected element: HTMLImageElement;
+  public color: 'white' | 'black';
   public coords: Coords;
   protected current_cell: Cell;
   protected isSelected: boolean = false;
@@ -53,6 +55,18 @@ export abstract class Piece {
     this.pieceMovements.clear();
   }
 
+  public attackAt(x: number, y: number): void {
+    if (this.isCellAccessible(x, y) && this.isCellOccupied(x, y)) {
+      const pieceToEat = pieceList.getPiece({ x, y });
+      if (this.isEnemy(pieceToEat)) {
+        pieceToEat.remove();
+        pieceList.removePiece(pieceToEat);
+        this.move(x, y);
+        this.unselect();
+      }
+    }
+  }
+
   public move(x: number, y: number): void {
     if (this.isCellAccessible(x, y)) {
       this.updateCoords(x, y);
@@ -69,12 +83,21 @@ export abstract class Piece {
     });
   }
 
+  protected isCellOccupied(x: number, y: number): boolean {
+    return cellList.getCell({ x, y }).isOccupied();
+  }
+
+  public isEnemy(piece: Piece): boolean {
+    return piece.color !== this.color;
+  }
+
   protected updateCoords(x: number, y: number): void {
     this.coords = { x: x, y: y };
   }
 
   protected remove(): void {
     this.element.remove();
+    this.current_cell.setOccupied(false);
   }
 
   protected append(): void {
@@ -87,5 +110,6 @@ export abstract class Piece {
       y: this.coords.y,
     });
     this.current_cell.element.append(this.element);
+    this.current_cell.setOccupied(true);
   }
 }

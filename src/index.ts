@@ -11,12 +11,23 @@ $('#field').addEventListener('click', (event) => {
   const target = event.target as Element;
 
   if (target.tagName == 'IMG') {
-    clearSelectedPiece();
     const x = +target.getAttribute('x');
     const y = +target.getAttribute('y');
     const piece = pieceList.getPiece({ x, y });
+
     if (piece) {
-      piece.select();
+      const selectedPiece = pieceList.getSelectedPiece();
+
+      if (selectedPiece) {
+        if (selectedPiece.isEnemy(piece)) {
+          selectedPiece.attackAt(x, y);
+        } else {
+          clearSelectedPiece();
+          piece.select();
+        }
+      } else {
+        piece.select();
+      }
     }
   } else {
     const x = +target.getAttribute('x');
@@ -26,6 +37,14 @@ $('#field').addEventListener('click', (event) => {
       piece.move(x, y);
       clearSelectedPiece();
     }
+  }
+});
+
+document.addEventListener('click', (event) => {
+  const target = event.target as Element;
+
+  if (target.tagName != 'DIV' && target.tagName != 'IMG') {
+    clearSelectedPiece();
   }
 });
 

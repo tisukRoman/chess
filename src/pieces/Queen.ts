@@ -1,6 +1,6 @@
 import { cellList } from '..';
 import { Cell } from '../cells/Cell';
-import { Piece, PieceMovements } from './Piece';
+import { Color, Piece, PieceMovements } from './Piece';
 const white_queen_src = require('../images/white_queen.png');
 const black_queen_src = require('../images/black_queen.png');
 
@@ -30,6 +30,7 @@ class QueenMovements implements PieceMovements {
 }
 
 export class WhiteQueen extends Piece {
+  public color: Color = 'white';
   protected pieceMovements: PieceMovements = new QueenMovements();
 
   constructor(x: number, y: number) {
@@ -38,6 +39,7 @@ export class WhiteQueen extends Piece {
 }
 
 export class BlackQueen extends Piece {
+  public color: Color = 'black';
   protected pieceMovements: PieceMovements = new QueenMovements();
 
   constructor(x: number, y: number) {

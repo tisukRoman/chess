@@ -8,7 +8,19 @@ import { BlackPawn, WhitePawn } from './Pawn';
 
 export class PieceList {
   private pieces: Piece[] = [];
+  private eaten_pieces: Piece[] = [];
   private selected_piece: Piece | null;
+
+  public removePiece(piece: Piece): void {
+    this.pieces = this.pieces.filter(
+      (p) => p.coords.x !== piece.coords.x || p.coords.y !== piece.coords.y
+    );
+    this.addToEaten(piece);
+  }
+
+  private addToEaten(piece: Piece): void {
+    this.eaten_pieces.push(piece);
+  }
 
   public getSelectedPiece(): Piece {
     return this.selected_piece;
@@ -18,14 +30,14 @@ export class PieceList {
     this.selected_piece = piece;
   }
 
-  public addPiece(piece: Piece): void {
-    this.pieces.push(piece);
-  }
-
   public getPiece(coords: Coords): Piece {
     return this.pieces.find(
       (p) => p.coords.x === coords.x && p.coords.y === coords.y
     );
+  }
+
+  private addPiece(piece: Piece): void {
+    this.pieces.push(piece);
   }
 
   static createPieceList(): PieceList {

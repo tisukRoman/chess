@@ -1,5 +1,5 @@
 import { Cell } from '../cells/Cell';
-import { Piece, PieceMovements } from './Piece';
+import { Color, Piece, PieceMovements } from './Piece';
 import { cellList } from '../index';
 const white_pawn_src = require('../images/white_pawn.png');
 const black_pawn_src = require('../images/black_pawn.png');
@@ -41,6 +41,7 @@ class PawnMovements implements PieceMovements {
 }
 
 export class WhitePawn extends Piece {
+  public color: Color = 'white';
   protected pieceMovements = new PawnMovements('white');
 
   constructor(x: number, y: number) {
@@ -60,8 +61,8 @@ export class WhitePawn extends Piece {
 }
 
 export class BlackPawn extends Piece {
+  public color: Color = 'black';
   protected pieceMovements = new PawnMovements('black');
-  private madeMove: boolean = false;
 
   constructor(x: number, y: number) {
     super(x, y, black_pawn_src);

@@ -5,7 +5,8 @@ export class Cell {
     public x: number,
     public y: number,
     public element: HTMLDivElement = null,
-    public is_focused: boolean = false
+    private is_focused: boolean = false,
+    private is_occupied: boolean = false
   ) {}
 
   public setFocused(): void {
@@ -16,11 +17,19 @@ export class Cell {
     }
   }
 
-  setUnfocused(): void {
+  public setUnfocused(): void {
     this.is_focused = false;
     const cellElem = $(`div[x="${this.x}"][y="${this.y}"]`);
     if (cellElem) {
       cellElem.classList.remove('focus');
     }
+  }
+
+  public setOccupied(state: boolean): void {
+    this.is_occupied = state;
+  }
+
+  public isOccupied(): boolean {
+    return this.is_occupied;
   }
 }

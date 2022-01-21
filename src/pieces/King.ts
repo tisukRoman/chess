@@ -1,5 +1,5 @@
 import { Cell } from '../cells/Cell';
-import { Piece, PieceMovements } from './Piece';
+import { Color, Piece, PieceMovements } from './Piece';
 import { cellList } from '../index';
 const white_king_src = require('../images/white_king.png');
 const black_king_src = require('../images/black_king.png');
@@ -25,6 +25,7 @@ class KingMovements implements PieceMovements {
 }
 
 export class WhiteKing extends Piece {
+  public color: Color = 'white';
   protected pieceMovements: PieceMovements = new KingMovements();
 
   constructor(x: number, y: number) {
@@ -33,6 +34,7 @@ export class WhiteKing extends Piece {
 }
 
 export class BlackKing extends Piece {
+  public color: Color = 'black';
   protected pieceMovements: PieceMovements = new KingMovements();
 
   constructor(x: number, y: number) {

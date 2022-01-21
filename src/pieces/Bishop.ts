@@ -1,6 +1,6 @@
 import { cellList } from '..';
 import { Cell } from '../cells/Cell';
-import { Piece, PieceMovements } from './Piece';
+import { Color, Piece, PieceMovements } from './Piece';
 const white_bishop_src = require('../images/white_bishop.png');
 const black_bishop_src = require('../images/black_bishop.png');
 
@@ -26,6 +26,7 @@ class BishopMovements implements PieceMovements {
 }
 
 export class WhiteBishop extends Piece {
+  public color: Color = 'white';
   protected pieceMovements: PieceMovements = new BishopMovements();
 
   constructor(x: number, y: number) {
@@ -34,6 +35,7 @@ export class WhiteBishop extends Piece {
 }
 
 export class BlackBishop extends Piece {
+  public color: Color = 'black';
   protected pieceMovements: PieceMovements = new BishopMovements();
 
   constructor(x: number, y: number) {

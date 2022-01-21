@@ -535,14 +535,22 @@ const pieceList = _pieceList.PieceList.createPieceList();
 _utils.$('#field').addEventListener('click', (event)=>{
     const target = event.target;
     if (target.tagName == 'IMG') {
-        clearSelectedPiece();
         const x = +target.getAttribute('x');
         const y = +target.getAttribute('y');
         const piece = pieceList.getPiece({
             x,
             y
         });
-        if (piece) piece.select();
+        if (piece) {
+            const selectedPiece = pieceList.getSelectedPiece();
+            if (selectedPiece) {
+                if (selectedPiece.isEnemy(piece)) selectedPiece.attackAt(x, y);
+                else {
+                    clearSelectedPiece();
+                    piece.select();
+                }
+            } else piece.select();
+        }
     } else {
         const x = +target.getAttribute('x');
         const y = +target.getAttribute('y');
@@ -552,6 +560,10 @@ _utils.$('#field').addEventListener('click', (event)=>{
             clearSelectedPiece();
         }
     }
+});
+document.addEventListener('click', (event)=>{
+    const target = event.target;
+    if (target.tagName != 'DIV' && target.tagName != 'IMG') clearSelectedPiece();
 });
 function clearSelectedPiece() {
     const selectedPiece = pieceList.getSelectedPiece();
@@ -659,11 +671,12 @@ parcelHelpers.export(exports, "Cell", ()=>Cell
 );
 var _utils = require("../utils");
 class Cell {
-    constructor(x, y, element = null, is_focused = false){
+    constructor(x, y, element = null, is_focused = false, is_occupied = false){
         this.x = x;
         this.y = y;
         this.element = element;
         this.is_focused = is_focused;
+        this.is_occupied = is_occupied;
     }
     setFocused() {
         this.is_focused = true;
@@ -674,6 +687,12 @@ class Cell {
         this.is_focused = false;
         const cellElem = _utils.$(`div[x="${this.x}"][y="${this.y}"]`);
         if (cellElem) cellElem.classList.remove('focus');
+    }
+    setOccupied(state) {
+        this.is_occupied = state;
+    }
+    isOccupied() {
+        return this.is_occupied;
     }
 }
 
@@ -689,18 +708,26 @@ var _queen = require("./Queen");
 var _king = require("./King");
 var _pawn = require("./Pawn");
 class PieceList {
+    removePiece(piece) {
+        this.pieces = this.pieces.filter((p)=>p.coords.x !== piece.coords.x || p.coords.y !== piece.coords.y
+        );
+        this.addToEaten(piece);
+    }
+    addToEaten(piece) {
+        this.eaten_pieces.push(piece);
+    }
     getSelectedPiece() {
         return this.selected_piece;
     }
     setSelectedPiece(piece) {
         this.selected_piece = piece;
     }
-    addPiece(piece) {
-        this.pieces.push(piece);
-    }
     getPiece(coords) {
         return this.pieces.find((p)=>p.coords.x === coords.x && p.coords.y === coords.y
         );
+    }
+    addPiece(piece) {
+        this.pieces.push(piece);
     }
     static createPieceList() {
         let pieceList = new PieceList();
@@ -726,59 +753,46 @@ class PieceList {
     }
     constructor(){
         this.pieces = [];
+        this.eaten_pieces = [];
     }
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"ciiiV","./Knight":"bX1kp","./Rook":"bBfE2","./Bishop":"d36nD","./Queen":"8nTkI","./King":"6Vy0l","./Pawn":"fNPBR"}],"bX1kp":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"ciiiV","./Rook":"bBfE2","./Queen":"8nTkI","./Knight":"bX1kp","./Bishop":"d36nD","./King":"6Vy0l","./Pawn":"fNPBR"}],"bBfE2":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "WhiteKnight", ()=>WhiteKnight
+parcelHelpers.export(exports, "WhiteRook", ()=>WhiteRook
 );
-parcelHelpers.export(exports, "BlackKnight", ()=>BlackKnight
+parcelHelpers.export(exports, "BlackRook", ()=>BlackRook
 );
+var _ = require("..");
 var _piece = require("./Piece");
-var _index = require("../index");
-const white_knight_src = require('../images/white_knight.png');
-const black_knight_src = require('../images/black_knight.png');
-class KnightMovements {
+const white_rook_src = require('../images/white_rook.png');
+const black_rook_src = require('../images/black_rook.png');
+class RookMovements {
     findAccessibleCells(piece) {
         const x = piece.coords.x;
         const y = piece.coords.y;
-        this.accessible_cells = [
-            _index.cellList.getCell({
-                x: x - 1,
-                y: y - 2
-            }),
-            _index.cellList.getCell({
-                x: x + 1,
-                y: y - 2
-            }),
-            _index.cellList.getCell({
-                x: x - 2,
-                y: y - 1
-            }),
-            _index.cellList.getCell({
-                x: x + 2,
-                y: y - 1
-            }),
-            _index.cellList.getCell({
-                x: x - 1,
-                y: y + 2
-            }),
-            _index.cellList.getCell({
-                x: x + 1,
-                y: y + 2
-            }),
-            _index.cellList.getCell({
-                x: x - 2,
-                y: y + 1
-            }),
-            _index.cellList.getCell({
-                x: x + 2,
-                y: y + 1
-            }), 
-        ].filter((cell)=>cell
+        for(let i = 0; i < 8; i++){
+            this.accessible_cells.push(_.cellList.getCell({
+                x: x,
+                y: y - i
+            }));
+            this.accessible_cells.push(_.cellList.getCell({
+                x: x,
+                y: y + i
+            }));
+            this.accessible_cells.push(_.cellList.getCell({
+                x: x - i,
+                y: y
+            }));
+            this.accessible_cells.push(_.cellList.getCell({
+                x: x + i,
+                y: y
+            }));
+        }
+        this.accessible_cells = this.accessible_cells.filter((cell)=>cell
         );
+        console.log(this.accessible_cells);
     }
     clear() {
         this.accessible_cells = [];
@@ -787,20 +801,22 @@ class KnightMovements {
         this.accessible_cells = [];
     }
 }
-class WhiteKnight extends _piece.Piece {
+class WhiteRook extends _piece.Piece {
     constructor(x, y){
-        super(x, y, white_knight_src);
-        this.pieceMovements = new KnightMovements();
+        super(x, y, white_rook_src);
+        this.color = 'white';
+        this.pieceMovements = new RookMovements();
     }
 }
-class BlackKnight extends _piece.Piece {
+class BlackRook extends _piece.Piece {
     constructor(x, y){
-        super(x, y, black_knight_src);
-        this.pieceMovements = new KnightMovements();
+        super(x, y, black_rook_src);
+        this.color = 'black';
+        this.pieceMovements = new RookMovements();
     }
 }
 
-},{"./Piece":"VP4kA","../index":"7PGg5","../images/white_knight.png":"iO7nL","../images/black_knight.png":"bbQFs","@parcel/transformer-js/src/esmodule-helpers.js":"ciiiV"}],"VP4kA":[function(require,module,exports) {
+},{"..":"7PGg5","./Piece":"VP4kA","../images/white_rook.png":"6MPKy","@parcel/transformer-js/src/esmodule-helpers.js":"ciiiV","../images/black_rook.png":"lSKpb"}],"VP4kA":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "Piece", ()=>Piece
@@ -841,6 +857,20 @@ class Piece {
         });
         this.pieceMovements.clear();
     }
+    attackAt(x, y) {
+        if (this.isCellAccessible(x, y) && this.isCellOccupied(x, y)) {
+            const pieceToEat = _index.pieceList.getPiece({
+                x,
+                y
+            });
+            if (this.isEnemy(pieceToEat)) {
+                pieceToEat.remove();
+                _index.pieceList.removePiece(pieceToEat);
+                this.move(x, y);
+                this.unselect();
+            }
+        }
+    }
     move(x, y) {
         if (this.isCellAccessible(x, y)) {
             this.updateCoords(x, y);
@@ -853,6 +883,15 @@ class Piece {
             return cell.x === x && cell.y === y;
         });
     }
+    isCellOccupied(x, y) {
+        return _index.cellList.getCell({
+            x,
+            y
+        }).isOccupied();
+    }
+    isEnemy(piece) {
+        return piece.color !== this.color;
+    }
     updateCoords(x, y) {
         this.coords = {
             x: x,
@@ -861,6 +900,7 @@ class Piece {
     }
     remove() {
         this.element.remove();
+        this.current_cell.setOccupied(false);
     }
     append() {
         this.element = document.createElement('img');
@@ -872,11 +912,12 @@ class Piece {
             y: this.coords.y
         });
         this.current_cell.element.append(this.element);
+        this.current_cell.setOccupied(true);
     }
 }
 
-},{"../index":"7PGg5","@parcel/transformer-js/src/esmodule-helpers.js":"ciiiV"}],"iO7nL":[function(require,module,exports) {
-module.exports = require('./helpers/bundle-url').getBundleURL('2VWEd') + "white_knight.0f6a8866.png" + "?" + Date.now();
+},{"../index":"7PGg5","@parcel/transformer-js/src/esmodule-helpers.js":"ciiiV"}],"6MPKy":[function(require,module,exports) {
+module.exports = require('./helpers/bundle-url').getBundleURL('2VWEd') + "white_rook.025d5693.png" + "?" + Date.now();
 
 },{"./helpers/bundle-url":"chiK4"}],"chiK4":[function(require,module,exports) {
 "use strict";
@@ -913,132 +954,8 @@ exports.getBundleURL = getBundleURLCached;
 exports.getBaseURL = getBaseURL;
 exports.getOrigin = getOrigin;
 
-},{}],"bbQFs":[function(require,module,exports) {
-module.exports = require('./helpers/bundle-url').getBundleURL('2VWEd') + "black_knight.c33eb336.png" + "?" + Date.now();
-
-},{"./helpers/bundle-url":"chiK4"}],"bBfE2":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "WhiteRook", ()=>WhiteRook
-);
-parcelHelpers.export(exports, "BlackRook", ()=>BlackRook
-);
-var _ = require("..");
-var _piece = require("./Piece");
-const white_rook_src = require('../images/white_rook.png');
-const black_rook_src = require('../images/black_rook.png');
-class RookMovements {
-    findAccessibleCells(piece) {
-        const x = piece.coords.x;
-        const y = piece.coords.y;
-        for(let i = 0; i < 8; i++){
-            this.accessible_cells.push(_.cellList.getCell({
-                x: x,
-                y: y - i
-            }));
-            this.accessible_cells.push(_.cellList.getCell({
-                x: x,
-                y: y + i
-            }));
-            this.accessible_cells.push(_.cellList.getCell({
-                x: x - i,
-                y: y
-            }));
-            this.accessible_cells.push(_.cellList.getCell({
-                x: x + i,
-                y: y
-            }));
-        }
-        this.accessible_cells = this.accessible_cells.filter((cell)=>cell
-        );
-    }
-    clear() {
-        this.accessible_cells = [];
-    }
-    constructor(){
-        this.accessible_cells = [];
-    }
-}
-class WhiteRook extends _piece.Piece {
-    constructor(x, y){
-        super(x, y, white_rook_src);
-        this.pieceMovements = new RookMovements();
-    }
-}
-class BlackRook extends _piece.Piece {
-    constructor(x, y){
-        super(x, y, black_rook_src);
-        this.pieceMovements = new RookMovements();
-    }
-}
-
-},{"..":"7PGg5","./Piece":"VP4kA","../images/white_rook.png":"6MPKy","@parcel/transformer-js/src/esmodule-helpers.js":"ciiiV","../images/black_rook.png":"lSKpb"}],"6MPKy":[function(require,module,exports) {
-module.exports = require('./helpers/bundle-url').getBundleURL('2VWEd') + "white_rook.025d5693.png" + "?" + Date.now();
-
-},{"./helpers/bundle-url":"chiK4"}],"lSKpb":[function(require,module,exports) {
+},{}],"lSKpb":[function(require,module,exports) {
 module.exports = require('./helpers/bundle-url').getBundleURL('2VWEd') + "black_rook.369762d6.png" + "?" + Date.now();
-
-},{"./helpers/bundle-url":"chiK4"}],"d36nD":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "WhiteBishop", ()=>WhiteBishop
-);
-parcelHelpers.export(exports, "BlackBishop", ()=>BlackBishop
-);
-var _ = require("..");
-var _piece = require("./Piece");
-const white_bishop_src = require('../images/white_bishop.png');
-const black_bishop_src = require('../images/black_bishop.png');
-class BishopMovements {
-    findAccessibleCells(piece) {
-        const x = piece.coords.x;
-        const y = piece.coords.y;
-        for(let i = 0; i < 8; i++){
-            this.accessible_cells.push(_.cellList.getCell({
-                x: x + i,
-                y: y + i
-            }));
-            this.accessible_cells.push(_.cellList.getCell({
-                x: x - i,
-                y: y + i
-            }));
-            this.accessible_cells.push(_.cellList.getCell({
-                x: x - i,
-                y: y - i
-            }));
-            this.accessible_cells.push(_.cellList.getCell({
-                x: x + i,
-                y: y - i
-            }));
-        }
-        this.accessible_cells = this.accessible_cells.filter((cell)=>cell
-        );
-    }
-    clear() {
-        this.accessible_cells = [];
-    }
-    constructor(){
-        this.accessible_cells = [];
-    }
-}
-class WhiteBishop extends _piece.Piece {
-    constructor(x, y){
-        super(x, y, white_bishop_src);
-        this.pieceMovements = new BishopMovements();
-    }
-}
-class BlackBishop extends _piece.Piece {
-    constructor(x, y){
-        super(x, y, black_bishop_src);
-        this.pieceMovements = new BishopMovements();
-    }
-}
-
-},{"..":"7PGg5","./Piece":"VP4kA","../images/white_bishop.png":"2NDBi","../images/black_bishop.png":"donC5","@parcel/transformer-js/src/esmodule-helpers.js":"ciiiV"}],"2NDBi":[function(require,module,exports) {
-module.exports = require('./helpers/bundle-url').getBundleURL('2VWEd') + "white_bishop.ab738f23.png" + "?" + Date.now();
-
-},{"./helpers/bundle-url":"chiK4"}],"donC5":[function(require,module,exports) {
-module.exports = require('./helpers/bundle-url').getBundleURL('2VWEd') + "black_bishop.2dceb030.png" + "?" + Date.now();
 
 },{"./helpers/bundle-url":"chiK4"}],"8nTkI":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
@@ -1102,12 +1019,14 @@ class QueenMovements {
 class WhiteQueen extends _piece.Piece {
     constructor(x, y){
         super(x, y, white_queen_src);
+        this.color = 'white';
         this.pieceMovements = new QueenMovements();
     }
 }
 class BlackQueen extends _piece.Piece {
     constructor(x, y){
         super(x, y, black_queen_src);
+        this.color = 'black';
         this.pieceMovements = new QueenMovements();
     }
 }
@@ -1117,6 +1036,149 @@ module.exports = require('./helpers/bundle-url').getBundleURL('2VWEd') + "white_
 
 },{"./helpers/bundle-url":"chiK4"}],"9dcYt":[function(require,module,exports) {
 module.exports = require('./helpers/bundle-url').getBundleURL('2VWEd') + "black_queen.8bcab55e.png" + "?" + Date.now();
+
+},{"./helpers/bundle-url":"chiK4"}],"bX1kp":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "WhiteKnight", ()=>WhiteKnight
+);
+parcelHelpers.export(exports, "BlackKnight", ()=>BlackKnight
+);
+var _piece = require("./Piece");
+var _index = require("../index");
+const white_knight_src = require('../images/white_knight.png');
+const black_knight_src = require('../images/black_knight.png');
+class KnightMovements {
+    findAccessibleCells(piece) {
+        const x = piece.coords.x;
+        const y = piece.coords.y;
+        this.accessible_cells = [
+            _index.cellList.getCell({
+                x: x - 1,
+                y: y - 2
+            }),
+            _index.cellList.getCell({
+                x: x + 1,
+                y: y - 2
+            }),
+            _index.cellList.getCell({
+                x: x - 2,
+                y: y - 1
+            }),
+            _index.cellList.getCell({
+                x: x + 2,
+                y: y - 1
+            }),
+            _index.cellList.getCell({
+                x: x - 1,
+                y: y + 2
+            }),
+            _index.cellList.getCell({
+                x: x + 1,
+                y: y + 2
+            }),
+            _index.cellList.getCell({
+                x: x - 2,
+                y: y + 1
+            }),
+            _index.cellList.getCell({
+                x: x + 2,
+                y: y + 1
+            }), 
+        ].filter((cell)=>cell
+        );
+    }
+    clear() {
+        this.accessible_cells = [];
+    }
+    constructor(){
+        this.accessible_cells = [];
+    }
+}
+class WhiteKnight extends _piece.Piece {
+    constructor(x, y){
+        super(x, y, white_knight_src);
+        this.color = 'white';
+        this.pieceMovements = new KnightMovements();
+    }
+}
+class BlackKnight extends _piece.Piece {
+    constructor(x, y){
+        super(x, y, black_knight_src);
+        this.color = 'black';
+        this.pieceMovements = new KnightMovements();
+    }
+}
+
+},{"./Piece":"VP4kA","../index":"7PGg5","../images/white_knight.png":"iO7nL","../images/black_knight.png":"bbQFs","@parcel/transformer-js/src/esmodule-helpers.js":"ciiiV"}],"iO7nL":[function(require,module,exports) {
+module.exports = require('./helpers/bundle-url').getBundleURL('2VWEd') + "white_knight.0f6a8866.png" + "?" + Date.now();
+
+},{"./helpers/bundle-url":"chiK4"}],"bbQFs":[function(require,module,exports) {
+module.exports = require('./helpers/bundle-url').getBundleURL('2VWEd') + "black_knight.c33eb336.png" + "?" + Date.now();
+
+},{"./helpers/bundle-url":"chiK4"}],"d36nD":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "WhiteBishop", ()=>WhiteBishop
+);
+parcelHelpers.export(exports, "BlackBishop", ()=>BlackBishop
+);
+var _ = require("..");
+var _piece = require("./Piece");
+const white_bishop_src = require('../images/white_bishop.png');
+const black_bishop_src = require('../images/black_bishop.png');
+class BishopMovements {
+    findAccessibleCells(piece) {
+        const x = piece.coords.x;
+        const y = piece.coords.y;
+        for(let i = 0; i < 8; i++){
+            this.accessible_cells.push(_.cellList.getCell({
+                x: x + i,
+                y: y + i
+            }));
+            this.accessible_cells.push(_.cellList.getCell({
+                x: x - i,
+                y: y + i
+            }));
+            this.accessible_cells.push(_.cellList.getCell({
+                x: x - i,
+                y: y - i
+            }));
+            this.accessible_cells.push(_.cellList.getCell({
+                x: x + i,
+                y: y - i
+            }));
+        }
+        this.accessible_cells = this.accessible_cells.filter((cell)=>cell
+        );
+    }
+    clear() {
+        this.accessible_cells = [];
+    }
+    constructor(){
+        this.accessible_cells = [];
+    }
+}
+class WhiteBishop extends _piece.Piece {
+    constructor(x, y){
+        super(x, y, white_bishop_src);
+        this.color = 'white';
+        this.pieceMovements = new BishopMovements();
+    }
+}
+class BlackBishop extends _piece.Piece {
+    constructor(x, y){
+        super(x, y, black_bishop_src);
+        this.color = 'black';
+        this.pieceMovements = new BishopMovements();
+    }
+}
+
+},{"..":"7PGg5","./Piece":"VP4kA","../images/white_bishop.png":"2NDBi","../images/black_bishop.png":"donC5","@parcel/transformer-js/src/esmodule-helpers.js":"ciiiV"}],"2NDBi":[function(require,module,exports) {
+module.exports = require('./helpers/bundle-url').getBundleURL('2VWEd') + "white_bishop.ab738f23.png" + "?" + Date.now();
+
+},{"./helpers/bundle-url":"chiK4"}],"donC5":[function(require,module,exports) {
+module.exports = require('./helpers/bundle-url').getBundleURL('2VWEd') + "black_bishop.2dceb030.png" + "?" + Date.now();
 
 },{"./helpers/bundle-url":"chiK4"}],"6Vy0l":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
@@ -1163,12 +1225,14 @@ class KingMovements {
 class WhiteKing extends _piece.Piece {
     constructor(x, y){
         super(x, y, white_king_src);
+        this.color = 'white';
         this.pieceMovements = new KingMovements();
     }
 }
 class BlackKing extends _piece.Piece {
     constructor(x, y){
         super(x, y, black_king_src);
+        this.color = 'black';
         this.pieceMovements = new KingMovements();
     }
 }
@@ -1234,6 +1298,7 @@ class PawnMovements {
 class WhitePawn extends _piece.Piece {
     constructor(x, y){
         super(x, y, white_pawn_src);
+        this.color = 'white';
         this.pieceMovements = new PawnMovements('white');
     }
     move(x, y) {
@@ -1248,8 +1313,8 @@ class WhitePawn extends _piece.Piece {
 class BlackPawn extends _piece.Piece {
     constructor(x, y){
         super(x, y, black_pawn_src);
+        this.color = 'black';
         this.pieceMovements = new PawnMovements('black');
-        this.madeMove = false;
     }
     move(x, y) {
         if (this.isCellAccessible(x, y)) {

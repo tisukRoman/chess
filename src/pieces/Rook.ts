@@ -1,6 +1,6 @@
 import { cellList } from '..';
 import { Cell } from '../cells/Cell';
-import { Piece, PieceMovements } from './Piece';
+import { Color, Piece, PieceMovements } from './Piece';
 const white_rook_src = require('../images/white_rook.png');
 const black_rook_src = require('../images/black_rook.png');
 
@@ -18,6 +18,7 @@ class RookMovements implements PieceMovements {
       this.accessible_cells.push(cellList.getCell({ x: x + i, y: y }));
     }
     this.accessible_cells = this.accessible_cells.filter((cell) => cell);
+    console.log(this.accessible_cells);
   }
 
   public clear(): void {
@@ -26,6 +27,7 @@ class RookMovements implements PieceMovements {
 }
 
 export class WhiteRook extends Piece {
+  public color: Color = 'white';
   protected pieceMovements: PieceMovements = new RookMovements();
 
   constructor(x: number, y: number) {
@@ -34,6 +36,7 @@ export class WhiteRook extends Piece {
 }
 
 export class BlackRook extends Piece {
+  public color: Color = 'black';
   protected pieceMovements: PieceMovements = new RookMovements();
 
   constructor(x: number, y: number) {
