@@ -47,7 +47,7 @@ img:hover {
 }
 
 .focus {
-  background-color: rgb(28, 170, 28);
+  background-color: rgba(28, 170, 28, 0.9);
   cursor: pointer;
 }
 
