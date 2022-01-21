@@ -37,12 +37,18 @@ body {
 }
 
 img {
-  width: 90%;
-  height: 90%;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+
+img:hover {
+  background-color: rgb(155, 31, 89);
 }
 
 .focus {
-  background-color: #0d0;
+  background-color: rgb(28, 170, 28);
+  cursor: pointer;
 }
 
 /*# sourceMappingURL=index.af814d91.css.map */

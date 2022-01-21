@@ -519,16 +519,46 @@ function hmrAcceptRun(bundle, id) {
 }
 
 },{}],"7PGg5":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "cellList", ()=>cellList
+);
+parcelHelpers.export(exports, "pieceList", ()=>pieceList
+);
 var _game = require("./Game");
-var _whiteKnight = require("./pieces/WhiteKnight");
+var _cellList = require("./cells/CellList");
+var _pieceList = require("./pieces/PieceList");
 var _utils = require("./utils");
 _game.game.render();
-const k1 = new _whiteKnight.WhiteKnight(6, 7);
-console.log(k1);
+const cellList = _cellList.CellList.createCellList();
+const pieceList = _pieceList.PieceList.createPieceList();
 _utils.$('#field').addEventListener('click', (event)=>{
+    const target = event.target;
+    if (target.tagName == 'IMG') {
+        clearSelectedPiece();
+        const x = +target.getAttribute('x');
+        const y = +target.getAttribute('y');
+        const piece = pieceList.getPiece({
+            x,
+            y
+        });
+        if (piece) piece.select();
+    } else {
+        const x = +target.getAttribute('x');
+        const y = +target.getAttribute('y');
+        const piece = pieceList.getSelectedPiece();
+        if (piece) {
+            piece.move(x, y);
+            clearSelectedPiece();
+        }
+    }
 });
+function clearSelectedPiece() {
+    const selectedPiece = pieceList.getSelectedPiece();
+    if (selectedPiece) selectedPiece.unselect();
+}
 
-},{"./utils":"jxYDB","./Game":"fJoK3","./pieces/WhiteKnight":"5nyJ1"}],"jxYDB":[function(require,module,exports) {
+},{"./utils":"jxYDB","./Game":"fJoK3","./cells/CellList":"kWUza","@parcel/transformer-js/src/esmodule-helpers.js":"ciiiV","./pieces/PieceList":"7sTMk"}],"jxYDB":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "$", ()=>$
@@ -589,132 +619,235 @@ class Game {
             cell.classList.add('cell');
             if ((i + j) % 2 === 0) cell.classList.add('white');
             else cell.classList.add('black');
-            cell.setAttribute('coords', `${i}${j}`);
+            cell.setAttribute('x', `${j}`);
+            cell.setAttribute('y', `${i}`);
             board.append(cell);
         }
-    }
-    setSelectedPiece(piece) {
-        this.selectedPiece = piece;
     }
 }
 const game = new Game();
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"ciiiV"}],"5nyJ1":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"ciiiV"}],"kWUza":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "WhiteKnight", ()=>WhiteKnight
+parcelHelpers.export(exports, "CellList", ()=>CellList
 );
-var _piece = require("./Piece");
-const white_knight_src = require('../images/white_knight.png');
-class WhiteKnight extends _piece.Piece {
-    constructor(x, y){
-        super(x, y, white_knight_src);
-    }
-}
-
-},{"./Piece":"VP4kA","../images/white_knight.png":"iO7nL","@parcel/transformer-js/src/esmodule-helpers.js":"ciiiV"}],"VP4kA":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "Piece", ()=>Piece
-);
-var _cellList = require("../cells/CellList");
-class Piece {
-    constructor(x, y, src){
-        this.selected = false;
-        this.coords = {
-            x: x,
-            y: y
-        };
-        this.element = document.createElement('img');
-        this.src = src;
-        this.element.src = src;
-        this.current_cell = _cellList.cellList.getCell(`${this.coords.y}${this.coords.x}`);
-        this.show();
-    }
-    select() {
-        if (this.isSelected()) {
-            this.unselect();
-            return;
-        }
-        this.findPossibleMoves();
-        this.setSelected();
-    }
-    move(x, y) {
-        this.changePosition(x, y);
-        this.show();
-    }
-    isSelected() {
-        return this.selected;
-    }
-    setSelected() {
-        this.selected = true;
-    }
-    unselect() {
-    // TODO
-    }
-    findPossibleMoves() {
-        this.pieceMovements.findPossibleMoves();
-    // TODO
-    }
-    changePosition(x, y) {
-        this.element.remove();
-        this.coords = {
-            x: x,
-            y: y
-        };
-        this.current_cell = _cellList.cellList.getCell(`${this.coords.x}${this.coords.y}`);
-    }
-    show() {
-        this.element = document.createElement('img');
-        this.element.src = this.src;
-        this.current_cell.piece = this;
-    }
-}
-
-},{"../cells/CellList":"kWUza","@parcel/transformer-js/src/esmodule-helpers.js":"ciiiV"}],"kWUza":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "cellList", ()=>cellList
-);
+var _utils = require("../utils");
 var _cell = require("./Cell");
 class CellList {
-    constructor(cells = []){
-        this.cells = cells;
-    }
     addCell(cell) {
         this.cells.push(cell);
     }
     getCell(coords) {
-        const x = +coords[1];
-        const y = +coords[0];
-        return this.cells.find((c)=>c.x === x && c.y === y
+        return this.cells.find((c)=>c.x === coords.x && c.y === coords.y
         );
     }
     static createCellList() {
-        let cellList1 = new CellList();
-        for(let i = 0; i < 8; i++)for(let j = 0; j < 8; j++)cellList1.addCell(new _cell.Cell(i, j));
-        return cellList1;
+        let cellList = new CellList();
+        for(let i = 0; i < 8; i++)for(let j = 0; j < 8; j++)cellList.addCell(new _cell.Cell(i, j, _utils.$(`div[x="${i}"][y="${j}"]`)));
+        return cellList;
+    }
+    constructor(){
+        this.cells = [];
     }
 }
-const cellList = CellList.createCellList();
 
-},{"./Cell":"k3yZy","@parcel/transformer-js/src/esmodule-helpers.js":"ciiiV"}],"k3yZy":[function(require,module,exports) {
+},{"./Cell":"k3yZy","../utils":"jxYDB","@parcel/transformer-js/src/esmodule-helpers.js":"ciiiV"}],"k3yZy":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "Cell", ()=>Cell
 );
 var _utils = require("../utils");
 class Cell {
-    constructor(x, y, element = null, piece = null){
+    constructor(x, y, element = null, is_focused = false){
         this.x = x;
         this.y = y;
         this.element = element;
-        this.piece = piece;
-        this.element = _utils.$(`[coords="${this.y}${this.x}"]`);
+        this.is_focused = is_focused;
+    }
+    setFocused() {
+        this.is_focused = true;
+        const cellElem = _utils.$(`div[x="${this.x}"][y="${this.y}"]`);
+        if (cellElem) cellElem.classList.add('focus');
+    }
+    setUnfocused() {
+        this.is_focused = false;
+        const cellElem = _utils.$(`div[x="${this.x}"][y="${this.y}"]`);
+        if (cellElem) cellElem.classList.remove('focus');
     }
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"ciiiV","../utils":"jxYDB"}],"iO7nL":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"ciiiV","../utils":"jxYDB"}],"7sTMk":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "PieceList", ()=>PieceList
+);
+var _whiteKnight = require("./WhiteKnight");
+class PieceList {
+    getSelectedPiece() {
+        return this.selected_piece;
+    }
+    setSelectedPiece(piece) {
+        this.selected_piece = piece;
+    }
+    addPiece(piece) {
+        this.pieces.push(piece);
+    }
+    getPiece(coords) {
+        return this.pieces.find((p)=>p.coords.x === coords.x && p.coords.y === coords.y
+        );
+    }
+    static createPieceList() {
+        let pieceList = new PieceList();
+        pieceList.addPiece(new _whiteKnight.WhiteKnight(6, 7));
+        pieceList.addPiece(new _whiteKnight.WhiteKnight(4, 4));
+        pieceList.addPiece(new _whiteKnight.WhiteKnight(7, 1));
+        pieceList.addPiece(new _whiteKnight.WhiteKnight(0, 0));
+        return pieceList;
+    }
+    constructor(){
+        this.pieces = [];
+    }
+}
+
+},{"./WhiteKnight":"5nyJ1","@parcel/transformer-js/src/esmodule-helpers.js":"ciiiV"}],"5nyJ1":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "WhiteKnight", ()=>WhiteKnight
+);
+var _piece = require("./Piece");
+var _index = require("./../index");
+const white_knight_src = require('../images/white_knight.png');
+class WhiteKingMovements {
+    findAccessibleCells(piece) {
+        const x = piece.coords.x;
+        const y = piece.coords.y;
+        this.accessible_cells = [
+            _index.cellList.getCell({
+                x: x - 1,
+                y: y - 2
+            }),
+            _index.cellList.getCell({
+                x: x + 1,
+                y: y - 2
+            }),
+            _index.cellList.getCell({
+                x: x - 2,
+                y: y - 1
+            }),
+            _index.cellList.getCell({
+                x: x + 2,
+                y: y - 1
+            }),
+            _index.cellList.getCell({
+                x: x - 1,
+                y: y + 2
+            }),
+            _index.cellList.getCell({
+                x: x + 1,
+                y: y + 2
+            }),
+            _index.cellList.getCell({
+                x: x - 2,
+                y: y + 1
+            }),
+            _index.cellList.getCell({
+                x: x + 2,
+                y: y + 1
+            }), 
+        ].filter((cell)=>cell
+        );
+    }
+    clear() {
+        this.accessible_cells = [];
+    }
+    constructor(){
+        this.accessible_cells = [];
+    }
+}
+class WhiteKnight extends _piece.Piece {
+    constructor(x, y){
+        super(x, y, white_knight_src);
+        this.pieceMovements = new WhiteKingMovements();
+    }
+}
+
+},{"./Piece":"VP4kA","@parcel/transformer-js/src/esmodule-helpers.js":"ciiiV","../images/white_knight.png":"iO7nL","./../index":"7PGg5"}],"VP4kA":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "Piece", ()=>Piece
+);
+var _index = require("../index");
+class Piece {
+    constructor(x, y, src){
+        this.isSelected = false;
+        this.coords = {
+            x: x,
+            y: y
+        };
+        this.src = src;
+        this.append();
+    }
+    select() {
+        if (this.isSelected) this.unselect();
+        else {
+            this.focusCells();
+            this.isSelected = true;
+            _index.pieceList.setSelectedPiece(this);
+        }
+    }
+    unselect() {
+        this.unfocusCells();
+        this.isSelected = false;
+        _index.pieceList.setSelectedPiece(null);
+    }
+    focusCells() {
+        this.pieceMovements.findAccessibleCells(this);
+        this.pieceMovements.accessible_cells.forEach((cell)=>{
+            cell.setFocused();
+        });
+    }
+    unfocusCells() {
+        this.pieceMovements.accessible_cells.forEach((cell)=>{
+            cell.setUnfocused();
+        });
+        this.pieceMovements.clear();
+    }
+    move(x, y) {
+        if (this.isCellAccessible(x, y)) {
+            this.updateCoords(x, y);
+            this.remove();
+            this.append();
+        } else this.unselect();
+    }
+    isCellAccessible(x, y) {
+        return this.pieceMovements.accessible_cells.some((cell)=>{
+            return cell.x === x && cell.y === y;
+        });
+    }
+    updateCoords(x, y) {
+        this.coords = {
+            x: x,
+            y: y
+        };
+    }
+    remove() {
+        this.element.remove();
+    }
+    append() {
+        this.element = document.createElement('img');
+        this.element.src = this.src;
+        this.element.setAttribute('x', `${this.coords.x}`);
+        this.element.setAttribute('y', `${this.coords.y}`);
+        this.current_cell = _index.cellList.getCell({
+            x: this.coords.x,
+            y: this.coords.y
+        });
+        this.current_cell.element.append(this.element);
+    }
+}
+
+},{"../index":"7PGg5","@parcel/transformer-js/src/esmodule-helpers.js":"ciiiV"}],"iO7nL":[function(require,module,exports) {
 module.exports = require('./helpers/bundle-url').getBundleURL('2VWEd') + "white_knight.0f6a8866.png" + "?" + Date.now();
 
 },{"./helpers/bundle-url":"chiK4"}],"chiK4":[function(require,module,exports) {

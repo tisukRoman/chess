@@ -1,8 +1,4 @@
-import { Piece } from './pieces/Piece';
-
 class Game {
-  private selectedPiece: Piece;
-
   public render(): void {
     const board = document.getElementById('field');
     for (let i = 0; i < 8; i++) {
@@ -15,14 +11,11 @@ class Game {
         } else {
           cell.classList.add('black');
         }
-        cell.setAttribute('coords', `${i}${j}`);
+        cell.setAttribute('x', `${j}`);
+        cell.setAttribute('y', `${i}`);
         board.append(cell);
       }
     }
-  }
-
-  public setSelectedPiece(piece: Piece): void {
-    this.selectedPiece = piece;
   }
 }
 

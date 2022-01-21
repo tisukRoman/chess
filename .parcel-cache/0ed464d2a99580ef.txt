@@ -1,4 +1,4 @@
-16647
+16648
 51D:\game_dev\chess\node_modules\stylehacks\README.md132868183899390731 0
 37D:\game_dev\chess\node_modules\base-x132868183878031494 1
 59D:\game_dev\chess\node_modules\es-abstract\2020\MakeDate.js132868183937879910 0
@@ -9,7 +9,7 @@
 115D:\game_dev\chess\node_modules\stream-browserify\node_modules\readable-stream\lib\internal\streams\end-of-stream.js132868183892531951 0
 86D:\game_dev\chess\node_modules\jsdom\lib\jsdom\living\nodes\HTMLPictureElement-impl.js132868183932009944 0
 30D:\game_dev\chess\package.json132870959663833372 0
-28D:\game_dev\chess\.gitignore132869189165653414 0
+28D:\game_dev\chess\.gitignore132871429802907704 0
 87D:\game_dev\chess\node_modules\postcss-modules\node_modules\postcss\lib\previous-map.js132868183897025027 0
 51D:\game_dev\chess\node_modules\parse5\lib\tokenizer132868183902444598 1
 67D:\game_dev\chess\node_modules\core-js\features\typed-array\find.js132868183947480793 0
@@ -48,9 +48,9 @@
 48D:\game_dev\chess\node_modules\path-key\index.js132868183874147481 0
 62D:\game_dev\chess\node_modules\caniuse-lite\data\regions\BA.js132868183909523597 0
 49D:\game_dev\chess\node_modules\lodash\subtract.js132868183946982122 0
-22D:\game_dev\chess\dist132871425327890095 1
+22D:\game_dev\chess\dist132872379532489635 1
 69D:\game_dev\chess\node_modules\@parcel\transformer-babel\lib\utils.js132868183902354799 0
-39D:\game_dev\chess\src\cells\CellList.ts132871425912245844 0
+39D:\game_dev\chess\src\cells\CellList.ts132872375883516145 0
 51D:\game_dev\chess\node_modules\postcss\lib\parse.js132868183894876326 0
 75D:\game_dev\chess\node_modules\css-select\lib\pseudo-selectors\filters.d.ts132868183902733924 0
 69D:\game_dev\chess\node_modules\cssstyle\lib\properties\borderColor.js132868183901072841 0
@@ -82,7 +82,7 @@
 43D:\game_dev\chess\node_modules\brorand\test132868183880087433 1
 42D:\game_dev\chess\node_modules\htmlparser2132868183893430181 1
 58D:\game_dev\chess\node_modules\core-js\stable\math\tanh.js132868183965295177 0
-43D:\game_dev\chess\src\pieces\WhiteKnight.ts132871426077890832 0
+43D:\game_dev\chess\src\pieces\WhiteKnight.ts132872351562470763 0
 35D:\game_dev\chess\package-lock.json132868199084022976 0
 27D:\game_dev\chess\src\cells132870942732599564 1
 61D:\game_dev\chess\node_modules\@parcel\transformer-js\LICENSE132868183892402268 0
@@ -91,11 +91,11 @@
 58D:\game_dev\chess\node_modules\mdn-data\css\selectors.json132868183898211852 0
 72D:\game_dev\chess\node_modules\w3c-hr-time\lib\global-monotonic-clock.js132868183886597929 0
 81D:\game_dev\chess\node_modules\caniuse-lite\data\features\private-class-fields.js132868183939297661 0
-30D:\game_dev\chess\src\index.ts132871426038630602 0
+30D:\game_dev\chess\src\index.ts132872379531079365 0
 55D:\game_dev\chess\node_modules\symbol-tree\package.json132868183872641333 0
 68D:\game_dev\chess\node_modules\typescript\lib\lib.es2017.object.d.ts132868199080130198 0
 39D:\game_dev\chess\node_modules\inflight132868183877094288 1
-29D:\game_dev\chess\src\Game.ts132871426109487555 0
+29D:\game_dev\chess\src\Game.ts132872375283436730 0
 57D:\game_dev\chess\node_modules\@babel\helper-plugin-utils132868183877961203 1
 60D:\game_dev\chess\node_modules\highlight.js\styles\ocean.css132868183913379558 0
 72D:\game_dev\chess\node_modules\jake\node_modules\supports-color\index.js132868183876105346 0
@@ -135,14 +135,14 @@
 50D:\game_dev\chess\node_modules\content-disposition132868183879899226 1
 55D:\game_dev\chess\node_modules\lodash\fp\assignInAll.js132868183927992465 0
 67D:\game_dev\chess\node_modules\highlight.js\scss\paraiso-light.scss132868183931535730 0
-32D:\game_dev\chess\src\index.html132869009587974435 0
+32D:\game_dev\chess\src\index.html132871497762869030 0
 75D:\game_dev\chess\node_modules\core-js\features\string\virtual\trim-left.js132868183966840854 0
 75D:\game_dev\chess\node_modules\stylehacks\dist\plugins\mediaSlash0Slash9.js132868183895345063 0
 35D:\game_dev\chess\node_modules\pako132868183906710538 1
 77D:\game_dev\chess\node_modules\tough-cookie\node_modules\punycode\punycode.js132868183878360029 0
 54D:\game_dev\chess\node_modules\es-abstract\2018\Day.js132868183922986513 0
 92D:\game_dev\chess\node_modules\@parcel\core\test\fixtures\common-targets-ignore\package.json132868183926104666 0
-28D:\game_dev\chess\src\pieces132870927642542729 1
+28D:\game_dev\chess\src\pieces132871485752430245 1
 55D:\game_dev\chess\node_modules\core-js\es\math\log1p.js132868183959400251 0
 43D:\game_dev\chess\node_modules\util\util.js132868183881778965 0
 55D:\game_dev\chess\node_modules\pako\lib\utils\common.js132868183880584538 0
@@ -150,7 +150,7 @@
 73D:\game_dev\chess\node_modules\htmlnano\docs\versioned_docs\version-1.1.1132868183911489598 1
 39D:\game_dev\chess\node_modules\has-flag132868183879188796 1
 62D:\game_dev\chess\node_modules\@types\node\worker_threads.d.ts132868183914085081 0
-31D:\game_dev\chess\src\style.css132870979822844968 0
+31D:\game_dev\chess\src\style.css132872340946152918 0
 62D:\game_dev\chess\node_modules\to-fast-properties\package.json132868183872900813 0
 54D:\game_dev\chess\node_modules\ajv\lib\dotjs\format.js132868183907563529 0
 33D:\game_dev\chess\node_modules\bl132868183891353800 1
@@ -171,7 +171,7 @@
 65D:\game_dev\chess\node_modules\uncss\node_modules\postcss\LICENSE132868183872990566 0
 44D:\game_dev\chess\node_modules\acorn-globals132868183877064366 1
 46D:\game_dev\chess\node_modules\lodash\isMap.js132868183938769089 0
-35D:\game_dev\chess\src\cells\Cell.ts132871425948613957 0
+35D:\game_dev\chess\src\cells\Cell.ts132872345793669558 0
 59D:\game_dev\chess\node_modules\cssom\lib\CSSFontFaceRule.js132868183882311882 0
 69D:\game_dev\chess\node_modules\core-js\actual\array\virtual\concat.js132868183923606634 0
 67D:\game_dev\chess\node_modules\is-number-object\.github\FUNDING.yml132868183891787812 0
@@ -189,8 +189,9 @@
 57D:\game_dev\chess\node_modules\side-channel\test\index.js132868183882219485 0
 81D:\game_dev\chess\node_modules\postcss-modules-scope\node_modules\chalk\readme.md132868183880654431 0
 59D:\game_dev\chess\node_modules\core-js\web\dom-exception.js132868183928781435 0
-37D:\game_dev\chess\src\pieces\Piece.ts132871425978083373 0
+37D:\game_dev\chess\src\pieces\Piece.ts132872378415172730 0
 54D:\game_dev\chess\node_modules\source-map\package.json132868183872910787 0
+41D:\game_dev\chess\src\pieces\PieceList.ts132872375843084064 0
 56D:\game_dev\chess\node_modules\yaml\browser\dist\util.js132868183908915556 0
 63D:\game_dev\chess\node_modules\core-js\stable\instance\slice.js132868183963868633 0
 81D:\game_dev\chess\node_modules\caniuse-lite\data\features\high-resolution-time.js132868183931791855 0
@@ -1586,11 +1587,6 @@
 49D:\game_dev\chess\node_modules\which\CHANGELOG.md132868183874147481 0
 40D:\game_dev\chess\node_modules\is-bigint132868183890237886 1
 61D:\game_dev\chess\node_modules\es-abstract\2021\DaysInYear.js132868183923654969 0
-100D:\game_dev\chess\node_modules\uncss\node_modules\postcss-selector-parser\dist\util\stripComments.js132868183912034480 0
-51D:\game_dev\chess\node_modules\core-js\features\map132868183967863268 1
-101D:\game_dev\chess\node_modules\postcss-modules-local-by-default\node_modules\supports-color\readme.md132868183880217084 0
-57D:\game_dev\chess\node_modules\shebang-regex\package.json132868183872711146 0
-54D:\game_dev\chess\node_modules\css-what\lib\index.d.ts132868183891164076 0
 38D:\game_dev\chess\node_modules\ieee754132868183879416127 1
 58D:\game_dev\chess\node_modules\is-boolean-object\README.md132868183891034143 0
 51D:\game_dev\chess\node_modules\lodash\_isKeyable.js132868183923460124 0
@@ -2420,7 +2416,6 @@
 62D:\game_dev\chess\node_modules\caniuse-lite\data\regions\LY.js132868183935945491 0
 44D:\game_dev\chess\node_modules\utility-types132868183894846399 1
 44D:\game_dev\chess\node_modules\escalade\dist132868183882488370 1
-48D:\game_dev\chess\node_modules\yaml\parse-cst.js132868183899320817 0
 84D:\game_dev\chess\node_modules\jsdom\lib\jsdom\living\nodes\HTMLInputElement-impl.js132868183931141202 0
 42D:\game_dev\chess\node_modules\utils-merge132868183879416127 1
 54D:\game_dev\chess\node_modules\lodash\fp\upperFirst.js132868183950141618 0
@@ -2491,6 +2486,7 @@
 53D:\game_dev\chess\node_modules\verror\CONTRIBUTING.md132868183882268565 0
 61D:\game_dev\chess\node_modules\core-js\internals\an-object.js132868183904560297 0
 44D:\game_dev\chess\node_modules\yaml\index.js132868183891373752 0
+48D:\game_dev\chess\node_modules\yaml\parse-cst.js132868183899320817 0
 50D:\game_dev\chess\node_modules\lodash\fp\create.js132868183931303420 0
 45D:\game_dev\chess\node_modules\yaml\README.md132868183911297018 0
 59D:\game_dev\chess\node_modules\querystring-es3\package.json132868183872930731 0
@@ -3680,6 +3676,8 @@
 67D:\game_dev\chess\node_modules\caniuse-lite\dist\unpacker\agents.js132868183894168208 0
 54D:\game_dev\chess\node_modules\source-map-js\README.md132868183894706768 0
 56D:\game_dev\chess\node_modules\@parcel\core\lib\types.js132868183925063571 0
+100D:\game_dev\chess\node_modules\uncss\node_modules\postcss-selector-parser\dist\util\stripComments.js132868183912034480 0
+51D:\game_dev\chess\node_modules\core-js\features\map132868183967863268 1
 54D:\game_dev\chess\node_modules\queue-microtask\LICENSE132868183872711146 0
 77D:\game_dev\chess\node_modules\http-proxy-middleware\dist\config-factory.d.ts132868183897713195 0
 46D:\game_dev\chess\node_modules\.bin\terser.ps1132868183989878300 0
@@ -5336,6 +5334,9 @@
 91D:\game_dev\chess\node_modules\postcss-modules-values\node_modules\source-map\lib\base64.js132868183885206305 0
 73D:\game_dev\chess\node_modules\es-abstract\helpers\isTrailingSurrogate.js132868183936087641 0
 53D:\game_dev\chess\node_modules\shebang-regex\index.js132868183874002454 0
+101D:\game_dev\chess\node_modules\postcss-modules-local-by-default\node_modules\supports-color\readme.md132868183880217084 0
+57D:\game_dev\chess\node_modules\shebang-regex\package.json132868183872711146 0
+54D:\game_dev\chess\node_modules\css-what\lib\index.d.ts132868183891164076 0
 54D:\game_dev\chess\node_modules\shebang-regex\readme.md132868183877726726 0
 51D:\game_dev\chess\node_modules\mime-types\README.md132868183880326983 0
 53D:\game_dev\chess\node_modules\balanced-match\.github132868183880067888 1
@@ -7404,7 +7405,7 @@
 53D:\game_dev\chess\node_modules\pako\lib\zlib\trees.js132868183905205466 0
 78D:\game_dev\chess\node_modules\@parcel\package-manager\src\NodeResolverBase.js132868183914853801 0
 49D:\game_dev\chess\node_modules\lodash\fp\hasIn.js132868183936425552 0
-41D:\game_dev\chess\dist\index.af814d91.css132871410961823956 0
+41D:\game_dev\chess\dist\index.af814d91.css132872340768595595 0
 49D:\game_dev\chess\node_modules\mime-types\LICENSE132868183877737127 0
 50D:\game_dev\chess\node_modules\lodash\toInteger.js132868183948170011 0
 55D:\game_dev\chess\node_modules\pako\lib\zlib\zstream.js132868183905385909 0
@@ -11139,8 +11140,8 @@
 44D:\game_dev\chess\node_modules\fastparse\lib132868183877752418 1
 48D:\game_dev\chess\node_modules\fastparse\LICENSE132868183874039454 0
 53D:\game_dev\chess\node_modules\extsprintf\.gitmodules132868183878968584 0
-50D:\game_dev\chess\node_modules\fastparse\README.md132868183875855852 0
 83D:\game_dev\chess\node_modules\@babel\generator\lib\generators\template-literals.js132868183894257978 0
+50D:\game_dev\chess\node_modules\fastparse\README.md132868183875855852 0
 63D:\game_dev\chess\node_modules\fastest-levenshtein\.eslintrc.js132868183874167429 0
 57D:\game_dev\chess\node_modules\csso\lib\replace\Number.js132868183907044521 0
 61D:\game_dev\chess\node_modules\fastest-levenshtein\index.d.ts132868183886169406 0
@@ -16641,8 +16642,8 @@
 40D:\game_dev\chess\node_modules\.bin\uuid132868183989878300 0
 44D:\game_dev\chess\node_modules\.bin\uuid.ps1132868183989878300 0
 41D:\game_dev\chess\node_modules\.bin\which132868183989878300 0
-45D:\game_dev\chess\dist\index.af814d91.css.map132871410961875927 0
-40D:\game_dev\chess\dist\index.bdea7d65.js132871425327853946 0
-44D:\game_dev\chess\dist\index.bdea7d65.js.map132871425327880572 0
-33D:\game_dev\chess\dist\index.html132871410961534742 0
-48D:\game_dev\chess\dist\white_knight.0f6a8866.png132871421495068365 0
+45D:\game_dev\chess\dist\index.af814d91.css.map132872340768642578 0
+40D:\game_dev\chess\dist\index.bdea7d65.js132872379532450013 0
+44D:\game_dev\chess\dist\index.bdea7d65.js.map132872379532479647 0
+33D:\game_dev\chess\dist\index.html132872334911321129 0
+48D:\game_dev\chess\dist\white_knight.0f6a8866.png132872334911411086 0
