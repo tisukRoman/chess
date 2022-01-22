@@ -1330,7 +1330,11 @@ class PawnMovements {
                 y: y - 1
             }));
             this.accessible_cells = [
-                ...this.accessible_cells,
+                ...this.accessible_cells.filter((cell)=>{
+                    if (!cell) return false;
+                    if (cell.isOccupied()) return false;
+                    else return true;
+                }),
                 ...this.getEnemyCellsForWhite(x, y), 
             ];
         } else {
@@ -1343,14 +1347,14 @@ class PawnMovements {
                 y: y + 1
             }));
             this.accessible_cells = [
-                ...this.accessible_cells,
+                ...this.accessible_cells.filter((cell)=>{
+                    if (!cell) return false;
+                    if (cell.isOccupied()) return false;
+                    else return true;
+                }),
                 ...this.getEnemyCellsForBlack(x, y), 
             ];
         }
-        this.accessible_cells = this.accessible_cells.filter((cell)=>{
-            if (!cell) return false;
-            else return true;
-        });
     }
     clear() {
         this.accessible_cells = [];
