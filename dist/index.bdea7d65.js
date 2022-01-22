@@ -579,6 +579,9 @@ parcelHelpers.export(exports, "$$", ()=>$$
 );
 parcelHelpers.export(exports, "$$$", ()=>$$$
 );
+parcelHelpers.export(exports, "findCellsInDirection", ()=>findCellsInDirection
+);
+var _ = require(".");
 const $ = (query)=>document.querySelector(query)
 ;
 const $$ = (query)=>[
@@ -587,8 +590,86 @@ const $$ = (query)=>[
 ;
 const $$$ = (element, query)=>element.querySelector(query)
 ;
+function findCellsInDirection(x, y, direction) {
+    const accessible_cells = [];
+    let cell = null;
+    const ourPiece = _.pieceList.getPiece({
+        x,
+        y
+    });
+    let i = 1;
+    debugger;
+    while(true){
+        switch(direction){
+            case 'left':
+                cell = _.cellList.getCell({
+                    x: x - i,
+                    y
+                });
+                break;
+            case 'right':
+                cell = _.cellList.getCell({
+                    x: x + i,
+                    y
+                });
+                break;
+            case 'up':
+                cell = _.cellList.getCell({
+                    x,
+                    y: y - i
+                });
+                break;
+            case 'down':
+                cell = _.cellList.getCell({
+                    x,
+                    y: y + i
+                });
+                break;
+            case 'down_left':
+                cell = _.cellList.getCell({
+                    x: x - i,
+                    y: y + i
+                });
+                break;
+            case 'down_right':
+                cell = _.cellList.getCell({
+                    x: x + i,
+                    y: y + i
+                });
+                break;
+            case 'up_left':
+                cell = _.cellList.getCell({
+                    x: x - i,
+                    y: y - i
+                });
+                break;
+            case 'up_right':
+                cell = _.cellList.getCell({
+                    x: x + i,
+                    y: y - i
+                });
+                break;
+            default:
+                return;
+        }
+        if (!cell) break;
+        const otherPiece = _.pieceList.getPiece({
+            x: cell.x,
+            y: cell.y
+        });
+        if (cell.isOccupied() && otherPiece && ourPiece.isEnemy(otherPiece)) {
+            accessible_cells.push(cell);
+            break;
+        } else if (cell.isOccupied()) break;
+        else {
+            accessible_cells.push(cell);
+            i++;
+        }
+    }
+    return accessible_cells;
+}
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"ciiiV"}],"ciiiV":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"ciiiV",".":"7PGg5"}],"ciiiV":[function(require,module,exports) {
 exports.interopDefault = function(a) {
     return a && a.__esModule ? a : {
         default: a
@@ -764,7 +845,7 @@ parcelHelpers.export(exports, "WhiteRook", ()=>WhiteRook
 );
 parcelHelpers.export(exports, "BlackRook", ()=>BlackRook
 );
-var _ = require("..");
+var _utils = require("../utils");
 var _piece = require("./Piece");
 const white_rook_src = require('../images/white_rook.png');
 const black_rook_src = require('../images/black_rook.png');
@@ -772,27 +853,12 @@ class RookMovements {
     findAccessibleCells(piece) {
         const x = piece.coords.x;
         const y = piece.coords.y;
-        for(let i = 0; i < 8; i++){
-            this.accessible_cells.push(_.cellList.getCell({
-                x: x,
-                y: y - i
-            }));
-            this.accessible_cells.push(_.cellList.getCell({
-                x: x,
-                y: y + i
-            }));
-            this.accessible_cells.push(_.cellList.getCell({
-                x: x - i,
-                y: y
-            }));
-            this.accessible_cells.push(_.cellList.getCell({
-                x: x + i,
-                y: y
-            }));
-        }
-        this.accessible_cells = this.accessible_cells.filter((cell)=>cell
-        );
-        console.log(this.accessible_cells);
+        this.accessible_cells = [
+            ..._utils.findCellsInDirection(x, y, 'left'),
+            ..._utils.findCellsInDirection(x, y, 'right'),
+            ..._utils.findCellsInDirection(x, y, 'up'),
+            ..._utils.findCellsInDirection(x, y, 'down'), 
+        ];
     }
     clear() {
         this.accessible_cells = [];
@@ -816,7 +882,7 @@ class BlackRook extends _piece.Piece {
     }
 }
 
-},{"..":"7PGg5","./Piece":"VP4kA","../images/white_rook.png":"6MPKy","@parcel/transformer-js/src/esmodule-helpers.js":"ciiiV","../images/black_rook.png":"lSKpb"}],"VP4kA":[function(require,module,exports) {
+},{"./Piece":"VP4kA","../images/white_rook.png":"6MPKy","@parcel/transformer-js/src/esmodule-helpers.js":"ciiiV","../images/black_rook.png":"lSKpb","../utils":"jxYDB"}],"VP4kA":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "Piece", ()=>Piece
@@ -964,7 +1030,7 @@ parcelHelpers.export(exports, "WhiteQueen", ()=>WhiteQueen
 );
 parcelHelpers.export(exports, "BlackQueen", ()=>BlackQueen
 );
-var _ = require("..");
+var _utils = require("../utils");
 var _piece = require("./Piece");
 const white_queen_src = require('../images/white_queen.png');
 const black_queen_src = require('../images/black_queen.png');
@@ -972,42 +1038,16 @@ class QueenMovements {
     findAccessibleCells(piece) {
         const x = piece.coords.x;
         const y = piece.coords.y;
-        for(let i = 0; i < 8; i++){
-            this.accessible_cells.push(_.cellList.getCell({
-                x: x,
-                y: y - i
-            }));
-            this.accessible_cells.push(_.cellList.getCell({
-                x: x,
-                y: y + i
-            }));
-            this.accessible_cells.push(_.cellList.getCell({
-                x: x - i,
-                y: y
-            }));
-            this.accessible_cells.push(_.cellList.getCell({
-                x: x + i,
-                y: y
-            }));
-            this.accessible_cells.push(_.cellList.getCell({
-                x: x + i,
-                y: y + i
-            }));
-            this.accessible_cells.push(_.cellList.getCell({
-                x: x - i,
-                y: y + i
-            }));
-            this.accessible_cells.push(_.cellList.getCell({
-                x: x - i,
-                y: y - i
-            }));
-            this.accessible_cells.push(_.cellList.getCell({
-                x: x + i,
-                y: y - i
-            }));
-        }
-        this.accessible_cells = this.accessible_cells.filter((cell)=>cell
-        );
+        this.accessible_cells = [
+            ..._utils.findCellsInDirection(x, y, 'left'),
+            ..._utils.findCellsInDirection(x, y, 'right'),
+            ..._utils.findCellsInDirection(x, y, 'up'),
+            ..._utils.findCellsInDirection(x, y, 'down'),
+            ..._utils.findCellsInDirection(x, y, 'up_left'),
+            ..._utils.findCellsInDirection(x, y, 'up_right'),
+            ..._utils.findCellsInDirection(x, y, 'down_left'),
+            ..._utils.findCellsInDirection(x, y, 'down_right'), 
+        ];
     }
     clear() {
         this.accessible_cells = [];
@@ -1031,7 +1071,7 @@ class BlackQueen extends _piece.Piece {
     }
 }
 
-},{"..":"7PGg5","./Piece":"VP4kA","../images/white_queen.png":"fyuLg","../images/black_queen.png":"9dcYt","@parcel/transformer-js/src/esmodule-helpers.js":"ciiiV"}],"fyuLg":[function(require,module,exports) {
+},{"./Piece":"VP4kA","../images/white_queen.png":"fyuLg","../images/black_queen.png":"9dcYt","@parcel/transformer-js/src/esmodule-helpers.js":"ciiiV","../utils":"jxYDB"}],"fyuLg":[function(require,module,exports) {
 module.exports = require('./helpers/bundle-url').getBundleURL('2VWEd') + "white_queen.0330b44c.png" + "?" + Date.now();
 
 },{"./helpers/bundle-url":"chiK4"}],"9dcYt":[function(require,module,exports) {
@@ -1085,8 +1125,15 @@ class KnightMovements {
                 x: x + 2,
                 y: y + 1
             }), 
-        ].filter((cell)=>cell
-        );
+        ].filter((cell)=>{
+            if (!cell) return false;
+            const pieceOnCell = _index.pieceList.getPiece({
+                x: cell.x,
+                y: cell.y
+            });
+            if (cell.isOccupied() && pieceOnCell && !pieceOnCell.isEnemy(piece)) return false;
+            else return true;
+        });
     }
     clear() {
         this.accessible_cells = [];
@@ -1123,7 +1170,7 @@ parcelHelpers.export(exports, "WhiteBishop", ()=>WhiteBishop
 );
 parcelHelpers.export(exports, "BlackBishop", ()=>BlackBishop
 );
-var _ = require("..");
+var _utils = require("../utils");
 var _piece = require("./Piece");
 const white_bishop_src = require('../images/white_bishop.png');
 const black_bishop_src = require('../images/black_bishop.png');
@@ -1131,26 +1178,12 @@ class BishopMovements {
     findAccessibleCells(piece) {
         const x = piece.coords.x;
         const y = piece.coords.y;
-        for(let i = 0; i < 8; i++){
-            this.accessible_cells.push(_.cellList.getCell({
-                x: x + i,
-                y: y + i
-            }));
-            this.accessible_cells.push(_.cellList.getCell({
-                x: x - i,
-                y: y + i
-            }));
-            this.accessible_cells.push(_.cellList.getCell({
-                x: x - i,
-                y: y - i
-            }));
-            this.accessible_cells.push(_.cellList.getCell({
-                x: x + i,
-                y: y - i
-            }));
-        }
-        this.accessible_cells = this.accessible_cells.filter((cell)=>cell
-        );
+        this.accessible_cells = [
+            ..._utils.findCellsInDirection(x, y, 'up_left'),
+            ..._utils.findCellsInDirection(x, y, 'up_right'),
+            ..._utils.findCellsInDirection(x, y, 'down_left'),
+            ..._utils.findCellsInDirection(x, y, 'down_right'), 
+        ];
     }
     clear() {
         this.accessible_cells = [];
@@ -1174,7 +1207,7 @@ class BlackBishop extends _piece.Piece {
     }
 }
 
-},{"..":"7PGg5","./Piece":"VP4kA","../images/white_bishop.png":"2NDBi","../images/black_bishop.png":"donC5","@parcel/transformer-js/src/esmodule-helpers.js":"ciiiV"}],"2NDBi":[function(require,module,exports) {
+},{"./Piece":"VP4kA","../images/white_bishop.png":"2NDBi","../images/black_bishop.png":"donC5","@parcel/transformer-js/src/esmodule-helpers.js":"ciiiV","../utils":"jxYDB"}],"2NDBi":[function(require,module,exports) {
 module.exports = require('./helpers/bundle-url').getBundleURL('2VWEd') + "white_bishop.ab738f23.png" + "?" + Date.now();
 
 },{"./helpers/bundle-url":"chiK4"}],"donC5":[function(require,module,exports) {
@@ -1197,23 +1230,46 @@ class KingMovements {
         const y = piece.coords.y;
         this.accessible_cells = [
             _index.cellList.getCell({
+                x,
+                y: y + 1
+            }),
+            _index.cellList.getCell({
+                x,
+                y: y - 1
+            }),
+            _index.cellList.getCell({
+                x: x - 1,
+                y
+            }),
+            _index.cellList.getCell({
+                x: x + 1,
+                y
+            }),
+            _index.cellList.getCell({
                 x: x + 1,
                 y: y + 1
             }),
             _index.cellList.getCell({
                 x: x - 1,
-                y: y + 1
+                y: y - 1
             }),
             _index.cellList.getCell({
                 x: x - 1,
-                y: y - 1
+                y: y + 1
             }),
             _index.cellList.getCell({
                 x: x + 1,
                 y: y - 1
             }), 
-        ].filter((cell)=>cell
-        );
+        ].filter((cell)=>{
+            if (!cell) return false;
+            const pieceOnCell = _index.pieceList.getPiece({
+                x: cell.x,
+                y: cell.y
+            });
+            if (cell.isOccupied() && pieceOnCell && !pieceOnCell.isEnemy(piece)) return false;
+            else return true;
+        });
     }
     clear() {
         this.accessible_cells = [];
@@ -1273,8 +1329,10 @@ class PawnMovements {
                 x: x,
                 y: y - 1
             }));
-            this.accessible_cells = this.accessible_cells.filter((cell)=>cell
-            );
+            this.accessible_cells = [
+                ...this.accessible_cells,
+                ...this.getEnemyCellsForWhite(x, y), 
+            ];
         } else {
             if (!this.made_move) this.accessible_cells.push(_index.cellList.getCell({
                 x: x,
@@ -1284,15 +1342,71 @@ class PawnMovements {
                 x: x,
                 y: y + 1
             }));
-            this.accessible_cells = this.accessible_cells.filter((cell)=>cell
-            );
+            this.accessible_cells = [
+                ...this.accessible_cells,
+                ...this.getEnemyCellsForBlack(x, y), 
+            ];
         }
+        this.accessible_cells = this.accessible_cells.filter((cell)=>{
+            if (!cell) return false;
+            else return true;
+        });
     }
     clear() {
         this.accessible_cells = [];
     }
     setMadeMove() {
         this.made_move = true;
+    }
+    getEnemyCellsForWhite(x, y) {
+        const ourPiece = _index.pieceList.getPiece({
+            x,
+            y
+        });
+        return [
+            _index.pieceList.getPiece({
+                x: x - 1,
+                y: y - 1
+            }),
+            _index.pieceList.getPiece({
+                x: x + 1,
+                y: y - 1
+            }), 
+        ].filter((piece)=>{
+            if (!piece) return false;
+            if (!piece.isEnemy(ourPiece)) return false;
+            else return true;
+        }).map((p)=>{
+            return _index.cellList.getCell({
+                x: p.coords.x,
+                y: p.coords.y
+            });
+        });
+    }
+    getEnemyCellsForBlack(x, y) {
+        const ourPiece = _index.pieceList.getPiece({
+            x,
+            y
+        });
+        return [
+            _index.pieceList.getPiece({
+                x: x - 1,
+                y: y + 1
+            }),
+            _index.pieceList.getPiece({
+                x: x + 1,
+                y: y + 1
+            }), 
+        ].filter((piece)=>{
+            if (!piece) return false;
+            if (!piece.isEnemy(ourPiece)) return false;
+            else return true;
+        }).map((p)=>{
+            return _index.cellList.getCell({
+                x: p.coords.x,
+                y: p.coords.y
+            });
+        });
     }
 }
 class WhitePawn extends _piece.Piece {

@@ -1,6 +1,6 @@
 import { Cell } from '../cells/Cell';
 import { Color, Piece, PieceMovements } from './Piece';
-import { cellList } from '../index';
+import { cellList, pieceList } from '../index';
 const white_king_src = require('../images/white_king.png');
 const black_king_src = require('../images/black_king.png');
 
@@ -12,11 +12,25 @@ class KingMovements implements PieceMovements {
     const y = piece.coords.y;
 
     this.accessible_cells = [
+      cellList.getCell({ x, y: y + 1 }),
+      cellList.getCell({ x, y: y - 1 }),
+      cellList.getCell({ x: x - 1, y }),
+      cellList.getCell({ x: x + 1, y}),
       cellList.getCell({ x: x + 1, y: y + 1 }),
-      cellList.getCell({ x: x - 1, y: y + 1 }),
       cellList.getCell({ x: x - 1, y: y - 1 }),
-      cellList.getCell({ x: x + 1, y: y - 1 }),
-    ].filter((cell) => cell);
+      cellList.getCell({ x: x - 1, y: y + 1 }),
+      cellList.getCell({ x: x + 1, y: y - 1}),
+
+    ].filter((cell) => {
+      if (!cell) return false;
+
+      const pieceOnCell = pieceList.getPiece({ x: cell.x, y: cell.y });
+      if (cell.isOccupied() && pieceOnCell && !pieceOnCell.isEnemy(piece)) {
+        return false;
+      } else {
+        return true;
+      }
+    });
   }
 
   public clear(): void {

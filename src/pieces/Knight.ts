@@ -1,6 +1,6 @@
 import { Cell } from '../cells/Cell';
 import { Color, Piece, PieceMovements } from './Piece';
-import { cellList } from '../index';
+import { cellList, pieceList } from '../index';
 const white_knight_src = require('../images/white_knight.png');
 const black_knight_src = require('../images/black_knight.png');
 
@@ -20,7 +20,16 @@ class KnightMovements implements PieceMovements {
       cellList.getCell({ x: x + 1, y: y + 2 }),
       cellList.getCell({ x: x - 2, y: y + 1 }),
       cellList.getCell({ x: x + 2, y: y + 1 }),
-    ].filter((cell) => cell);
+    ].filter((cell) => {
+      if (!cell) return false;
+
+      const pieceOnCell = pieceList.getPiece({ x: cell.x, y: cell.y });
+      if (cell.isOccupied() && pieceOnCell && !pieceOnCell.isEnemy(piece)) {
+        return false;
+      } else {
+        return true;
+      }
+    });
   }
 
   public clear(): void {

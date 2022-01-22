@@ -1,5 +1,6 @@
 import { cellList } from '..';
 import { Cell } from '../cells/Cell';
+import { findCellsInDirection } from '../utils';
 import { Color, Piece, PieceMovements } from './Piece';
 const white_queen_src = require('../images/white_queen.png');
 const black_queen_src = require('../images/black_queen.png');
@@ -11,17 +12,16 @@ class QueenMovements implements PieceMovements {
     const x = piece.coords.x;
     const y = piece.coords.y;
 
-    for (let i = 0; i < 8; i++) {
-      this.accessible_cells.push(cellList.getCell({ x: x, y: y - i }));
-      this.accessible_cells.push(cellList.getCell({ x: x, y: y + i }));
-      this.accessible_cells.push(cellList.getCell({ x: x - i, y: y }));
-      this.accessible_cells.push(cellList.getCell({ x: x + i, y: y }));
-      this.accessible_cells.push(cellList.getCell({ x: x + i, y: y + i }));
-      this.accessible_cells.push(cellList.getCell({ x: x - i, y: y + i }));
-      this.accessible_cells.push(cellList.getCell({ x: x - i, y: y - i }));
-      this.accessible_cells.push(cellList.getCell({ x: x + i, y: y - i }));
-    }
-    this.accessible_cells = this.accessible_cells.filter((cell) => cell);
+    this.accessible_cells = [
+      ...findCellsInDirection(x, y, 'left'),
+      ...findCellsInDirection(x, y, 'right'),
+      ...findCellsInDirection(x, y, 'up'),
+      ...findCellsInDirection(x, y, 'down'),
+      ...findCellsInDirection(x, y, 'up_left'),
+      ...findCellsInDirection(x, y, 'up_right'),
+      ...findCellsInDirection(x, y, 'down_left'),
+      ...findCellsInDirection(x, y, 'down_right'),
+    ];
   }
 
   public clear(): void {
