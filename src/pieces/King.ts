@@ -6,6 +6,8 @@ const black_king_src = require('../images/black_king.png');
 
 class KingMovements implements PieceMovements {
   public accessible_cells: Cell[] = [];
+  public is_checked: boolean = false;
+  
 
   public findAccessibleCells(piece: Piece): void {
     const x = piece.coords.x;
@@ -19,11 +21,9 @@ class KingMovements implements PieceMovements {
       cellList.getCell({ x: x + 1, y: y + 1 }),
       cellList.getCell({ x: x - 1, y: y - 1 }),
       cellList.getCell({ x: x - 1, y: y + 1 }),
-      cellList.getCell({ x: x + 1, y: y - 1}),
-
+      cellList.getCell({ x: x + 1, y: y - 1})
     ].filter((cell) => {
       if (!cell) return false;
-
       const pieceOnCell = pieceList.getPiece({ x: cell.x, y: cell.y });
       if (cell.isOccupied() && pieceOnCell && !pieceOnCell.isEnemy(piece)) {
         return false;

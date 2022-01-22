@@ -1,12 +1,17 @@
 {
   "dependencies": {
-    "parcel": "^2.2.0"
+    "parcel": "^2.2.0",
+    "shx": "^0.3.4"
   },
   "devDependencies": {
     "typescript": "^4.5.4"
   },
   "scripts": {
-    "dev": "(parcel ./src/index.html) & parcel watch ./src/index.html",
-    "build": "parcel build ./src/index.html"
+    "start": "parcel ./src/index.html",
+    "prebuild-dev": "shx rm -rf dist/*",
+    "build-dev": "parcel build ./src/index.html --no-minify --public-url ./",
+    "prebuild": "shx rm -rf dist/*",
+    "build": "parcel build ./src/index.html --public-url ./",
+    "push-gh-pages": "push-dir --dir=dist --branch=gh-pages --cleanup --verbose"
   }
 }

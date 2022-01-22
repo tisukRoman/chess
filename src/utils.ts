@@ -27,8 +27,6 @@ export function findCellsInDirection(
   const ourPiece: Piece = pieceList.getPiece({ x, y });
   let i = 1;
 
-  debugger;
-
   while(true){
     switch (direction) {
       case 'left':
