@@ -1,5 +1,5 @@
 import { Cell } from '../cells/Cell';
-import { pieceList, cellList } from '../index';
+import { game } from '../Game';
 
 export type Coords = { x: number; y: number };
 export type Color = 'white' | 'black';
@@ -31,14 +31,14 @@ export abstract class Piece {
     } else {
       this.focusCells();
       this.isSelected = true;
-      pieceList.setSelectedPiece(this);
+      game.setSelectedPiece(this);
     }
   }
 
   public unselect(): void {
     this.unfocusCells();
     this.isSelected = false;
-    pieceList.setSelectedPiece(null);
+    game.setSelectedPiece(null);
   }
 
   protected focusCells(): void {
@@ -57,10 +57,10 @@ export abstract class Piece {
 
   public attackAt(x: number, y: number): void {
     if (this.isCellAccessible(x, y) && this.isCellOccupied(x, y)) {
-      const pieceToEat = pieceList.getPiece({ x, y });
+      const pieceToEat = game.getPiece({ x, y });
       if (this.isEnemy(pieceToEat)) {
         pieceToEat.remove();
-        pieceList.removePiece(pieceToEat);
+        game.removePiece(pieceToEat);
         this.move(x, y);
         this.unselect();
       }
@@ -84,7 +84,7 @@ export abstract class Piece {
   }
 
   protected isCellOccupied(x: number, y: number): boolean {
-    return cellList.getCell({ x, y }).isOccupied();
+    return game.getCell({ x, y }).isOccupied();
   }
 
   public isEnemy(piece: Piece): boolean {
@@ -105,7 +105,7 @@ export abstract class Piece {
     this.element.src = this.src;
     this.element.setAttribute('x', `${this.coords.x}`);
     this.element.setAttribute('y', `${this.coords.y}`);
-    this.current_cell = cellList.getCell({
+    this.current_cell = game.getCell({
       x: this.coords.x,
       y: this.coords.y,
     });

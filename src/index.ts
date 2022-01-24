@@ -1,11 +1,7 @@
 import { game } from './Game';
-import { CellList } from './cells/CellList';
-import { PieceList } from './pieces/PieceList';
 import { $ } from './utils';
 
-game.render();
-export const cellList = CellList.createCellList();
-export const pieceList = PieceList.createPieceList();
+game.init();
 
 $('#field').addEventListener('click', (event) => {
   const target = event.target as Element;
@@ -13,10 +9,10 @@ $('#field').addEventListener('click', (event) => {
   if (target.tagName == 'IMG') {
     const x = +target.getAttribute('x');
     const y = +target.getAttribute('y');
-    const piece = pieceList.getPiece({ x, y });
+    const piece = game.getPiece({ x, y });
 
     if (piece) {
-      const selectedPiece = pieceList.getSelectedPiece();
+      const selectedPiece = game.getSelectedPiece();
 
       if (selectedPiece) {
         if (selectedPiece.isEnemy(piece)) {
@@ -32,7 +28,7 @@ $('#field').addEventListener('click', (event) => {
   } else {
     const x = +target.getAttribute('x');
     const y = +target.getAttribute('y');
-    const piece = pieceList.getSelectedPiece();
+    const piece = game.getSelectedPiece();
     if (piece) {
       piece.move(x, y);
       clearSelectedPiece();
@@ -49,7 +45,7 @@ document.addEventListener('click', (event) => {
 });
 
 function clearSelectedPiece(): void {
-  const selectedPiece = pieceList.getSelectedPiece();
+  const selectedPiece = game.getSelectedPiece();
   if (selectedPiece) {
     selectedPiece.unselect();
   }

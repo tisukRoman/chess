@@ -7,7 +7,7 @@ import { BlackKing, WhiteKing } from './King';
 import { BlackPawn, WhitePawn } from './Pawn';
 
 export class PieceList {
-  private pieces: Piece[] = [];
+  public pieces: Piece[] = [];
   private eaten_pieces: Piece[] = [];
   private selected_piece: Piece | null;
 
@@ -34,10 +34,6 @@ export class PieceList {
     return this.pieces.find(
       (p) => p.coords.x === coords.x && p.coords.y === coords.y
     );
-  }
-
-  private addPiece(piece: Piece): void {
-    this.pieces.push(piece);
   }
 
   static createPieceList(): PieceList {
@@ -70,5 +66,9 @@ export class PieceList {
     }
 
     return pieceList;
+  }
+
+  private addPiece(piece: Piece): void {
+    this.pieces.push(piece);
   }
 }

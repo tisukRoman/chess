@@ -3,14 +3,14 @@ import { Cell } from './Cell';
 import { Coords } from '../pieces/Piece';
 
 export class CellList {
-  private cells: Cell[] = [];
-
-  public addCell(cell: Cell): void {
-    this.cells.push(cell);
-  }
+  public cells: Cell[] = [];
 
   public getCell(coords: Coords): Cell {
     return this.cells.find((c) => c.x === coords.x && c.y === coords.y);
+  }
+
+  private addCell(cell: Cell): void {
+    this.cells.push(cell);
   }
 
   static createCellList(): CellList {
