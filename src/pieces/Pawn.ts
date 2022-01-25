@@ -1,6 +1,6 @@
 import { Cell } from '../cells/Cell';
 import { Color, Piece, PieceMovements } from './Piece';
-import { cellList, pieceList } from '../index';
+import { game } from './../Game';
 const white_pawn_src = require('../images/white_pawn.png');
 const black_pawn_src = require('../images/black_pawn.png');
 
@@ -18,9 +18,9 @@ class PawnMovements implements PieceMovements {
 
     if (this.color === 'white') {
       if (!this.made_move) {
-        this.accessible_cells.push(cellList.getCell({ x: x, y: y - 2 }));
+        this.accessible_cells.push(game.getCell({ x: x, y: y - 2 }));
       }
-      this.accessible_cells.push(cellList.getCell({ x: x, y: y - 1 }));
+      this.accessible_cells.push(game.getCell({ x: x, y: y - 1 }));
       this.accessible_cells = [
         ...this.accessible_cells.filter((cell) => {
           if (!cell) return false;
@@ -31,9 +31,9 @@ class PawnMovements implements PieceMovements {
       ];
     } else {
       if (!this.made_move) {
-        this.accessible_cells.push(cellList.getCell({ x: x, y: y + 2 }));
+        this.accessible_cells.push(game.getCell({ x: x, y: y + 2 }));
       }
-      this.accessible_cells.push(cellList.getCell({ x: x, y: y + 1 }));
+      this.accessible_cells.push(game.getCell({ x: x, y: y + 1 }));
       this.accessible_cells = [
         ...this.accessible_cells.filter((cell) => {
           if (!cell) return false;
@@ -54,10 +54,10 @@ class PawnMovements implements PieceMovements {
   }
 
   private getEnemyCellsForWhite(x: number, y: number): Cell[] {
-    const ourPiece = pieceList.getPiece({ x, y });
+    const ourPiece = game.getPiece({ x, y });
     return [
-      pieceList.getPiece({ x: x - 1, y: y - 1 }),
-      pieceList.getPiece({ x: x + 1, y: y - 1 }),
+      game.getPiece({ x: x - 1, y: y - 1 }),
+      game.getPiece({ x: x + 1, y: y - 1 }),
     ]
       .filter((piece) => {
         if (!piece) return false;
@@ -65,15 +65,15 @@ class PawnMovements implements PieceMovements {
         else return true;
       })
       .map((p) => {
-        return cellList.getCell({ x: p.coords.x, y: p.coords.y });
+        return game.getCell({ x: p.coords.x, y: p.coords.y });
       });
   }
 
   private getEnemyCellsForBlack(x: number, y: number) {
-    const ourPiece = pieceList.getPiece({ x, y });
+    const ourPiece = game.getPiece({ x, y });
     return [
-      pieceList.getPiece({ x: x - 1, y: y + 1 }),
-      pieceList.getPiece({ x: x + 1, y: y + 1 }),
+      game.getPiece({ x: x - 1, y: y + 1 }),
+      game.getPiece({ x: x + 1, y: y + 1 }),
     ]
       .filter((piece) => {
         if (!piece) return false;
@@ -81,7 +81,7 @@ class PawnMovements implements PieceMovements {
         else return true;
       })
       .map((p) => {
-        return cellList.getCell({ x: p.coords.x, y: p.coords.y });
+        return game.getCell({ x: p.coords.x, y: p.coords.y });
       });
   }
 }

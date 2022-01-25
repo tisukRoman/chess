@@ -1,6 +1,6 @@
 import { Cell } from '../cells/Cell';
+import { game } from '../Game';
 import { Color, Piece, PieceMovements } from './Piece';
-import { cellList, pieceList } from '../index';
 const white_knight_src = require('../images/white_knight.png');
 const black_knight_src = require('../images/black_knight.png');
 
@@ -12,18 +12,18 @@ class KnightMovements implements PieceMovements {
     const y = piece.coords.y;
 
     this.accessible_cells = [
-      cellList.getCell({ x: x - 1, y: y - 2 }),
-      cellList.getCell({ x: x + 1, y: y - 2 }),
-      cellList.getCell({ x: x - 2, y: y - 1 }),
-      cellList.getCell({ x: x + 2, y: y - 1 }),
-      cellList.getCell({ x: x - 1, y: y + 2 }),
-      cellList.getCell({ x: x + 1, y: y + 2 }),
-      cellList.getCell({ x: x - 2, y: y + 1 }),
-      cellList.getCell({ x: x + 2, y: y + 1 }),
+      game.getCell({ x: x - 1, y: y - 2 }),
+      game.getCell({ x: x + 1, y: y - 2 }),
+      game.getCell({ x: x - 2, y: y - 1 }),
+      game.getCell({ x: x + 2, y: y - 1 }),
+      game.getCell({ x: x - 1, y: y + 2 }),
+      game.getCell({ x: x + 1, y: y + 2 }),
+      game.getCell({ x: x - 2, y: y + 1 }),
+      game.getCell({ x: x + 2, y: y + 1 }),
     ].filter((cell) => {
       if (!cell) return false;
 
-      const pieceOnCell = pieceList.getPiece({ x: cell.x, y: cell.y });
+      const pieceOnCell = game.getPiece({ x: cell.x, y: cell.y });
       if (cell.isOccupied() && pieceOnCell && !pieceOnCell.isEnemy(piece)) {
         return false;
       } else {

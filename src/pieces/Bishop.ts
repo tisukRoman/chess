@@ -1,4 +1,3 @@
-import { cellList } from '..';
 import { Cell } from '../cells/Cell';
 import { findCellsInDirection } from '../utils';
 import { Color, Piece, PieceMovements } from './Piece';
